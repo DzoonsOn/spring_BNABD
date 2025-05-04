@@ -10,4 +10,22 @@ public class Bnabd14Application {
 		SpringApplication.run(Bnabd14Application.class, args);
 	}
 
+
+
 }
+
+
+//{
+//  "firstName": "Kornelia",
+//  "lastName": "Nowak",
+//  "salary": 5000,
+//  "job": "Logic thinking",
+//  "department": {
+//    "idDept": 2
+//  }
+//}
+
+
+//{
+//  "deptName": "Logistic"
+//}

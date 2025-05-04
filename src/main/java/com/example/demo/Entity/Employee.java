@@ -1,40 +1,44 @@
 package com.example.demo.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.util.Set;
 
 @Entity
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column(nullable = false, length = 50)
     private String firstName;
+
+    @Column(nullable = false, length = 50)
     private String lastName;
+
     private BigDecimal salary;
 
-    // Relacja ManyToOne: Jeden pracownik może mieć jeden dział
-    @ManyToOne
+    @Column(length = 50)
+    private String job;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idDept", foreignKey = @ForeignKey(name = "FK_EmpDept"))
+    @JsonBackReference
     private Department department;
 
-    // Relacja OneToMany: Jeden pracownik może mieć wiele projektów
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-    private Set<Project> projects;
-
-    // Konstruktor
+    // Konstruktory
     public Employee() {
         super();
     }
 
-    public Employee(String firstName, String lastName, BigDecimal salary, Department department) {
+    public Employee(String firstName, String lastName, BigDecimal salary, Department department, String job) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.salary = salary;
         this.department = department;
+        this.job = job;
     }
 
     // Gettery i settery
@@ -70,7 +74,14 @@ public class Employee {
         this.salary = salary;
     }
 
-    @JsonIgnore  // Ignorujemy odniesienie do działu podczas serializacji JSON
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
+    }
+
     public Department getDepartment() {
         return department;
     }
@@ -78,17 +89,10 @@ public class Employee {
     public void setDepartment(Department department) {
         this.department = department;
     }
-    @JsonIgnore  // Ignorujemy odniesienie do działu podczas serializacji JSON
-    public Set<Project> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(Set<Project> projects) {
-        this.projects = projects;
-    }
 
     @Override
     public String toString() {
-        return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", salary=" + salary + "]";
+        return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName +
+                ", job=" + job + ", salary=" + salary + ", department=" + (department != null ? department.getIdDept() : "null") + "]";
     }
 }

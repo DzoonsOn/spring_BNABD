@@ -1,34 +1,23 @@
 package com.example.demo.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 public class Department {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDept;
 
-    private String dName;
-    private String job;
+    @Column(nullable = false, length = 50)
+    private String deptName;
 
-    // Relacja OneToMany: Jeden dział może mieć wielu pracowników
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
-    private Set<Employee> employees;
+    @JsonManagedReference
+    private List<Employee> employees;
 
-    // Konstruktor
-    public Department() {
-        super();
-    }
-
-    public Department(String dName, String job) {
-        this.dName = dName;
-        this.job = job;
-    }
-
-    // Gettery i settery
     public Long getIdDept() {
         return idDept;
     }
@@ -37,33 +26,19 @@ public class Department {
         this.idDept = idDept;
     }
 
-    public String getDName() {
-        return dName;
+    public String getDeptName() {
+        return deptName;
     }
 
-    public void setDName(String dName) {
-        this.dName = dName;
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
     }
 
-    public String getJob() {
-        return job;
-    }
-
-    public void setJob(String job) {
-        this.job = job;
-    }
-
-    @JsonIgnore  // Ignorujemy listę pracowników podczas serializacji JSON
-    public Set<Employee> getEmployees() {
+    public List<Employee> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(Set<Employee> employees) {
+    public void setEmployees(List<Employee> employees) {
         this.employees = employees;
-    }
-
-    @Override
-    public String toString() {
-        return "Department [idDept=" + idDept + ", deptName=" + dName + "]";
     }
 }
