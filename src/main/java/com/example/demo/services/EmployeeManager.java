@@ -3,6 +3,7 @@ package com.example.demo.services;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import com.example.demo.DTO.EmpDto;
 import com.example.demo.Entity.Employee;
@@ -72,5 +73,15 @@ public class EmployeeManager {
         return employeeRepository.findAll(pageable).getContent();
     }
 
+
+    public List<EmpDto> findAllNames() {
+        return getCollect();
+    }
+
+    private List<EmpDto> getCollect() {
+        return StreamSupport.stream(employeeRepository.findAll().spliterator(), false)
+                .map(employee -> new EmpDto(employee.getId(), employee.getLastName()))
+                .collect(Collectors.toList());
+    }
 
 }

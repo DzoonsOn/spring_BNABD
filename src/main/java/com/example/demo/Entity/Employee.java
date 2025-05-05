@@ -1,9 +1,11 @@
 package com.example.demo.Entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 public class Employee {
@@ -28,6 +30,10 @@ public class Employee {
     @JsonBackReference
     private Department department;
 
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Project> projects;
+
     // Konstruktory
     public Employee() {
         super();
@@ -49,6 +55,7 @@ public class Employee {
     public void setId(Long id) {
         this.id = id;
     }
+
 
     public String getFirstName() {
         return firstName;
@@ -88,6 +95,13 @@ public class Employee {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 
     @Override

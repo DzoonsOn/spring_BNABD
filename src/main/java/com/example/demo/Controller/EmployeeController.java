@@ -44,11 +44,7 @@ public class EmployeeController {
         return employeeManager.findById(employeeId);
     }
 
-    // Pobierz DTO pracowników (id i nazwisko)
-    @GetMapping("/names")
-    public List<EmpDto> getAllEmployeeNames() {
-        return employeeManager.findAllEmployeeDtos();
-    }
+
 
     // Zapisz pracownika
     @PostMapping("/save")
@@ -83,5 +79,10 @@ public class EmployeeController {
         return employeeManager.getTopEmployeesBySalary(count);
     }
 
+    // Pobierz DTO pracowników (id i nazwisko)
+    @GetMapping("/names")
+    public List<EmpDto> getAllEmployeeNames() {
+        return employeeManager.findAllNames();
+    }
 
 }
